@@ -6,23 +6,19 @@ import converter as conv
 def preprocessor(df, num): 
     # data preprocessing
     w_datalist = []         # df[]는 리스트마냥 append 안돼서 만듦
-    drop_indicator1 = df['이동거리(M)']
-    drop_indicator2 = df['연령대']
+    drop_indicator = df['이동거리(M)']
 
     cnt = 0
 
-    for i in range(len(drop_indicator1)):
+    for i in range(len(drop_indicator)):
         print(i)
 
         # drop
-        if int(drop_indicator1[i]) == 0:
+        if int(drop_indicator[i]) == 0:
             df = df.drop(index=i, axis=0)
             print(': dropped')
             cnt = cnt+1
-        # debugging: replace string with integer
-        elif drop_indicator2[i] == "기타":
-            df['연령대'][i] = 0
-        # digitalizing
+        # converting process
         else:
             w_datalist.append(conv.wknd(str(df['대여일자'][i])))
             df['대여일자'][i] = conv.date(str(df['대여일자'][i]))
@@ -42,13 +38,17 @@ def preprocessor(df, num):
 
 
     # save preprocessed data
-    df.to_csv("C:/Coding/AI&ML/Projects/seoul_bike_analysis/data/data_preprocessed_month{}.csv".format(num), index = False, encoding='utf-8')
-
-
+    #df.to_csv("C:/Coding/AI&ML/Projects/seoul_bike_analysis/data/data_preprocessed_month{}.csv".format(num), index = False, encoding='utf-8')
+    df.to_csv("C:/Coding/AI&ML/Projects/seoul_bike_analysis/data/preprocessed_debugging.csv", index = False, encoding='utf-8')
 
 
 '''
+#debugging
+df_raw = pd.read_csv('C:/Coding/AI&ML/Projects/seoul_bike_analysis/data/rawdata_debugging.csv', encoding='utf-8')
+preprocessor(df_raw,1)
+'''
 
+'''
 [label 해석]
 0. 대여일자
 1. 대여소번호
@@ -60,5 +60,4 @@ def preprocessor(df, num):
 7. 이동거리(M)
 8. 이용시간(분)
 9. 주말구분
-
 '''

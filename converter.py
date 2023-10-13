@@ -46,4 +46,8 @@ def btconv(string):
     
 def ageconv(string):
     age = re.findall(r'\d+', string)
+    if len(age) == 0:
+        age.append(0)
+    else:
+        pass
     return int(age[0])
